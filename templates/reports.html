@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reports</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0e0b16, #1b1e3f, #23395d);
+      color: white;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    header h1 {
+      font-size: 1.8rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 30px;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #ff4b4b;
+    }
+    .container {
+      padding: 40px;
+    }
+    canvas {
+      margin-bottom: 40px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid white;
+      padding: 12px;
+      text-align: center;
+    }
+    th {
+      background-color: #ff4b4b;
+    }
+    button {
+      margin-top: 20px;
+      background-color: #ff4b4b;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ff914d;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Reports</h1>
+    <nav>
+        <a href="{{ url_for('manage_tasks') }}">Manage Tasks</a>
+        <a href="{{ url_for('team_management') }}">Team Management</a>
+      <a href="{{ url_for('reports') }}">Reports</a>
+      <a href="#logout">Logout</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Task Completion Overview</h2>
+    <canvas id="taskChart"></canvas>
+
+    <h2>Employee Performance</h2>
+    <canvas id="performanceChart"></canvas>
+
+    <h2>Departmental Insights</h2>
+    <canvas id="departmentChart"></canvas>
+
+    <h2>Attendance & Activity Reports</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Employee ID</th>
+          <th>Name</th>
+          <th>Position</th>
+          <th>Attendance (%)</th>
+          <th>Tasks Completed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>101</td><td>John Doe</td><td>Developer</td><td>95%</td><td>15</td></tr>
+        <tr><td>102</td><td>Jane Smith</td><td>QA Engineer</td><td>90%</td><td>18</td></tr>
+        <tr><td>103</td><td>Emily Clark</td><td>Manager</td><td>85%</td><td>20</td></tr>
+      </tbody>
+    </table>
+
+    <button onclick="exportPDF()">Download PDF</button>
+    <button onclick="exportCSV()">Download CSV</button>
+  </div>
+
+  <script>
+    const ctx1 = document.getElementById('taskChart').getContext('2d');
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['Completed', 'Pending'],
+        datasets: [{
+          label: 'Tasks',
+          data: [18, 2],
+          backgroundColor: ['#4caf50', '#ff4b4b']
+        }]
+      }
+    });
+
+    const ctx2 = document.getElementById('performanceChart').getContext('2d');
+    new Chart(ctx2, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+        datasets: [{
+          label: 'Tasks Completed',
+          data: [5, 8, 12, 15, 18],
+          borderColor: '#00c4ff',
+          fill: false
+        }]
+      }
+    });
+
+    const ctx3 = document.getElementById('departmentChart').getContext('2d');
+    new Chart(ctx3, {
+      type: 'pie',
+      data: {
+        labels: ['Development', 'QA', 'Support', 'Management'],
+        datasets: [{
+          label: 'Department',
+          data: [40, 25, 20, 15],
+          backgroundColor: ['#4caf50', '#ff4b4b', '#00c4ff', '#ff914d']
+        }]
+      }
+    });
+
+    function exportPDF() {
+      alert('PDF download functionality will be added later.');
+    }
+
+    function exportCSV() {
+      alert('CSV download functionality will be added later.');
+    }
+  </script>
+</body>
+</html>

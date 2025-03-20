@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0e0b16, #1b1e3f, #23395d);
+      color: white;
+      overflow-x: hidden;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    header h1 {
+      font-size: 1.8rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 30px;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #ff4b4b;
+    }
+    .container {
+      padding: 60px;
+      max-width: 900px;
+      margin: auto;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3rem;
+      background: linear-gradient(to right, #ff4b4b, #ff914d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+    .btn {
+      background-color: #ff4b4b;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      margin: 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .btn:hover {
+      background-color: #ff914d;
+    }
+    canvas {
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Team Management</h1>
+    <nav>
+      <a href="{{ url_for('manage_tasks') }}">Manage Tasks</a>
+      <a href="{{ url_for('team_management') }}">Team Management</a>
+    <a href="{{ url_for('reports') }}">Reports</a>
+      <a href="#logout">Logout</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Manage Your Team</h1>
+    <button class="btn" onclick="window.location.href='add_employee'">Add Employee</button>
+    <button class="btn" onclick="window.location.href='delete_employee'">Delete Employee</button>
+    <button class="btn" onclick="window.location.href='update_employee'">Update Employee</button>
+    
+    <canvas id="employeeChart" width="400" height="400"></canvas>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('employeeChart').getContext('2d');
+    const data = {
+      labels: ['Managers', 'Developers', 'Designers', 'QA Engineers', 'Support'],
+      datasets: [{
+        label: 'Employee Distribution',
+        data: [5, 30, 10, 7, 8],
+        backgroundColor: ['#ff4b4b', '#ff914d', '#ffcc5c', '#ff6b6b', '#ffb4b4']
+      }]
+    };
+    new Chart(ctx, {
+      type: 'pie',
+      data: data
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Progress</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #001f3f, #003366, #00509e);
+      color: white;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    header h1 {
+      font-size: 1.8rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 30px;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #00c4ff;
+    }
+    .container {
+      padding: 60px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 3rem;
+      background: linear-gradient(to right, #00c4ff, #007bff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .task-list {
+      margin-bottom: 40px;
+    }
+    .chart-container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+    canvas {
+      max-width: 400px;
+      max-height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Employee Progress</h1>
+    <nav>
+      <a href="{{ url_for('employee_home') }}">Home</a>
+      <a href="{{ url_for('tasks') }}">Tasks</a>
+      <a href="{{ url_for('progress') }}">Progress</a>
+      <a href="{{ url_for('support') }}">support</a>
+      <a href="#logout">Logout</a>
+    </nav>
+  </header>
+  <div class="container">
+    <h1>Task Progress Overview</h1>
+
+    <div class="task-list">
+      <h2>Completed Tasks</h2>
+      <ul id="completedTasks"></ul>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="pieChart"></canvas>
+      <canvas id="barChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
+    const totalTasks = 20;
+
+    const completedTasksList = document.getElementById('completedTasks');
+    completedTasks.forEach(task => {
+      const li = document.createElement('li');
+      li.textContent = task;
+      completedTasksList.appendChild(li);
+    });
+
+    const ctx1 = document.getElementById('pieChart').getContext('2d');
+    new Chart(ctx1, {
+      type: 'pie',
+      data: {
+        labels: ['Completed', 'Pending'],
+        datasets: [{
+          data: [completedTasks.length, totalTasks - completedTasks.length],
+          backgroundColor: ['#00c4ff', '#007bff']
+        }]
+      }
+    });
+
+    const ctx2 = document.getElementById('barChart').getContext('2d');
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: Array.from({ length: totalTasks }, (_, i) => `Task ${i + 1}`),
+        datasets: [{
+          label: 'Completion Status',
+          data: Array.from({ length: totalTasks }, (_, i) => completedTasks.includes(`Task ${i + 1}`) ? 1 : 0),
+          backgroundColor: '#00c4ff'
+        }]
+      }
+    });
+  </script>
+</body>
+</html>

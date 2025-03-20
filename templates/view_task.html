@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>View Task</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0e0b16, #1b1e3f, #23395d);
+      color: white;
+      overflow-x: hidden;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    header h1 {
+      font-size: 1.8rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 30px;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #4caf50;
+    }
+    .container {
+      padding: 60px;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      margin: 60px auto;
+      max-width: 900px;
+    }
+    h1 {
+      font-size: 3.5rem;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    h2 {
+      color: #4facfe;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>View Task</h1>
+    <nav>
+      <a href="{{ url_for('employee_home') }}">Home</a>
+      <a href="{{ url_for('tasks') }}">Tasks</a>
+      <a href="{{ url_for('progress') }}">Progress</a>
+      <a href="{{ url_for('support') }}">support</a>
+      <a href="#logout">Logout</a>
+    </nav>
+  </header>
+  <div class="container">
+    <h1>Task Details</h1>
+    <div id="taskDetails"></div>
+    <button class="btn" id="completeTaskBtn">Mark as Completed</button>
+
+  </div>
+
+  <script>
+    const taskDescriptions = [
+      'Provide first-level support for hardware, software, and network issues.',
+      'Monitor and maintain computer systems, networks, and servers.',
+      'Implement cybersecurity measures to protect sensitive data.',
+      'Install, update, and manage enterprise applications and software.',
+      'Create and manage user accounts, permissions, and roles.',
+      'Manage cloud-based applications like AWS, Azure, and Google Cloud.',
+      'Set up automated data backup solutions and disaster recovery plans.',
+      'Maintain IT documentation and generate performance reports.',
+      'Track IT assets and ensure proper inventory management.',
+      'Manage corporate email systems and ensure security.',
+      'Implement and enforce IT policies and conduct audits.',
+      'Train employees on software and IT security practices.',
+      'Set up and troubleshoot VPNs for remote work.',
+      'Respond to service requests through a ticketing system.',
+      'Assist in integrating new tools and technologies.',
+      'Monitor network performance and optimize configurations.',
+      'Provide support for IT project implementations.',
+      'Perform vulnerability assessments and recommend improvements.',
+      'Manage databases and ensure data integrity.',
+      'Coordinate with vendors for IT purchases and customer support.'
+    ];
+  
+    const urlParams = new URLSearchParams(window.location.search);
+    const taskId = urlParams.get('id');
+    const taskDetails = document.getElementById('taskDetails');
+    const completeTaskBtn = document.getElementById('completeTaskBtn');
+  
+    if (taskId && taskId >= 1 && taskId <= 20) {
+      taskDetails.innerHTML = `<h2>Task ${taskId}</h2><p>${taskDescriptions[taskId - 1]}</p>`;
+      
+      const completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
+      if (completedTasks.includes(taskId)) {
+        completeTaskBtn.textContent = "Task Already Completed";
+        completeTaskBtn.disabled = true;
+      }
+      
+      completeTaskBtn.addEventListener('click', () => {
+        if (!completedTasks.includes(taskId)) {
+          completedTasks.push(taskId);
+          localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+          completeTaskBtn.textContent = "Task Completed";
+          completeTaskBtn.disabled = true;
+          alert('Task marked as completed!');
+        }
+      });
+    } else {
+      taskDetails.innerHTML = '<p>Invalid Task ID</p>';
+      completeTaskBtn.style.display = 'none';
+    }
+  </script>
+  
+</body>
+</html>

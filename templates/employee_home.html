@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Home</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #001f3f, #003366, #00509e);
+      color: white;
+      overflow-x: hidden;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    header h1 {
+      font-size: 1.8rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 30px;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #00c4ff;
+    }
+    .container {
+      padding: 60px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      margin: 60px auto;
+      max-width: 900px;
+    }
+    h1 {
+      font-size: 3.5rem;
+      background: linear-gradient(to right, #00c4ff, #007bff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+    }
+    .btn {
+      background-color: #00c4ff;
+      color: white;
+      padding: 12px 30px;
+      font-size: 1.2rem;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .btn:hover {
+      background-color: #007bff;
+    }
+    .dynamic-element {
+      animation: float 4s infinite ease-in-out;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Employee Dashboard</h1>
+    <nav>
+      <a href="{{ url_for('employee_home') }}">Home</a>
+      <a href="{{ url_for('tasks') }}">Tasks</a>
+      <a href="{{ url_for('progress') }}">Progress</a>
+      <a href="{{ url_for('support') }}">support</a>
+      <a href="#logout">Logout</a>
+    </nav>
+  </header>
+  <div class="container">
+    <h1>Welcome, Employee!</h1>
+    <p>Track your tasks, view progress, and access support resources with ease.</p>
+    <button class="btn">View Tasks</button>
+
+  </div>
+</body>
+</html>

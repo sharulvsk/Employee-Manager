@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Tasks</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #001f3f, #003366, #00509e);
+      color: white;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    header h1 {
+      font-size: 1.8rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 30px;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #00c4ff;
+    }
+    .container {
+      padding: 60px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 3rem;
+      background: linear-gradient(to right, #00c4ff, #007bff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+    .task {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      transition: transform 0.3s;
+    }
+    .task:hover {
+      transform: translateY(-5px);
+    }
+    .task h3 {
+      margin: 0 0 10px;
+      color: #00c4ff;
+    }
+    .task p {
+      margin: 0 10px 20px 0;
+    }
+    .btn {
+      background-color: #00c4ff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-right: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .btn:hover {
+      background-color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Employee Dashboard</h1>
+    <nav>
+      
+      <a href="{{ url_for('employee_home') }}">Home</a>
+      <a href="{{ url_for('tasks') }}">Tasks</a>
+      <a href="{{ url_for('progress') }}">Progress</a>
+      <a href="{{ url_for('support') }}">support</a>
+      <a href="#logout">Logout</a>
+    </nav>
+  </header>
+  <div class="container">
+    <h1>Your Tasks</h1>
+    <div id="taskList"></div>
+  </div>
+  <script>
+    const tasks = Array.from({ length: 20 }, (_, i) => ({
+      title: `Task ${i + 1}`,
+      description: `Complete the assigned task number ${i + 1} by the end of the day.`
+    }));
+    const taskList = document.getElementById('taskList');
+    tasks.forEach(task => {
+      const taskDiv = document.createElement('div');
+      taskDiv.className = 'task';
+      taskDiv.innerHTML = `
+        <h3>${task.title}</h3>
+        <p>${task.description}</p>
+        <button class="btn" onclick="window.location.href='/view_task?id=${task.title.split(' ')[1]}';">View Task</button>
+        <button class="btn" onclick="completeTask('${task.title}')">Completed</button>
+      `;
+      taskList.appendChild(taskDiv);
+    });
+    function viewTask(title) {
+      alert(`Viewing details for: ${title}`);
+    }
+    function completeTask(title) {
+      alert(`Task marked as completed: ${title}`);
+    }
+  </script>
+</body>
+</html>

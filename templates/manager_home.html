@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manager Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0e0b16, #1b1e3f, #23395d);
+      color: white;
+      overflow-x: hidden;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    header h1 {
+      font-size: 1.8rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 30px;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #ff4500;
+    }
+    .container {
+      padding: 80px 60px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 4rem;
+      background: linear-gradient(to right, #ff4500, #ff8c00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 60px;
+    }
+    .feature-card {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 20px;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+    .feature-card:hover {
+      transform: translateY(-10px);
+    }
+    .feature-card i {
+      font-size: 4rem;
+      color: #ff4500;
+    }
+    .feature-card h3 {
+      color: #ff8c00;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Manager Dashboard</h1>
+    <nav>
+      <a href="{{ url_for('manage_tasks') }}">Manage Tasks</a>
+      <a href="{{ url_for('team_management') }}">Team Management</a>
+      <a href="#reports">Reports</a>
+      <a href="#logout">Logout</a>
+    </nav>
+  </header>
+  <div class="container">
+    <h1>Welcome, Manager</h1>
+    <p>Track progress, manage tasks, and oversee your team's performance with ease.</p>
+    <div class="features">
+      <div class="feature-card" onclick="location.href='tasks.html'">
+        <i class="fa-solid fa-list-check"></i>
+        <h3>Manage Tasks</h3>
+        <p>Assign and monitor ongoing tasks.</p>
+      </div>
+      <div class="feature-card" onclick="location.href='team.html'">
+        <i class="fa-solid fa-users"></i>
+        <h3>Team Management</h3>
+        <p>View and manage your team members.</p>
+      </div>
+      <div class="feature-card" onclick="location.href='reports.html'">
+        <i class="fa-solid fa-chart-bar"></i>
+        <h3>Reports & Analytics</h3>
+        <p>Analyze progress with detailed reports.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
