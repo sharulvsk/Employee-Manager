@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assigned Tasks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #0e0b16, #1b1e3f, #23395d);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .task-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .task {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 250px;
+            text-align: center;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .task:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>Assigned Tasks</h1>
+    <div class="task-container" id="assignedTasksContainer"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const assignedTasks = JSON.parse(localStorage.getItem("assignedTasks")) || [];
+            const container = document.getElementById("assignedTasksContainer");
+            
+            if (assignedTasks.length === 0) {
+                container.innerHTML = "<p>No tasks assigned yet.</p>";
+                return;
+            }
+            
+            assignedTasks.forEach(task => {
+                const taskElement = document.createElement("div");
+                taskElement.classList.add("task");
+                taskElement.innerHTML = `
+                    <h3>${task.taskName}</h3>
+                    <p>Assigned to: ${task.employee}</p>
+                    <p>Description: ${task.description}</p>
+                `;
+                container.appendChild(taskElement);
+            });
+        });
+    </script>
+</body>
+</html>

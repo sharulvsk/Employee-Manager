@@ -1,107 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manage Tasks</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0e0b16, #1b1e3f, #23395d);
-      color: white;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 60px;
-      background-color: rgba(0, 0, 0, 0.8);
-    }
-    header h1 {
-      font-size: 1.8rem;
-    }
-    nav a {
-      color: #ff4500;
-      text-decoration: none;
-      margin-left: 30px;
-      font-size: 1rem;
-      transition: color 0.3s;
-    }
-    nav a:hover {
-      color: #ff6347;
-    }
-    .container {
-      padding: 60px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 20px;
-      transition: transform 0.3s;
-    }
-    .card:hover {
-      transform: translateY(-10px);
-    }
-    .card h3 {
-      color: #ff4500;
-    }
-    button {
-      background-color: #ff4500;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin-top: 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    button:hover {
-      background-color: #ff6347;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #0e0b16, #1b1e3f, #23395d);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .task-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .task {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 250px;
+            text-align: center;
+            transition: transform 0.3s, background 0.3s;
+            cursor: pointer;
+        }
+        .task:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        button {
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #e03e00;
+        }
+        .add-task-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff8c00;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .add-task-btn:hover {
+            background: #ff4500;
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Manage Tasks</h1>
-    <nav>
-      <a href="{{ url_for('manage_tasks') }}">Manage Tasks</a>
-      <a href="{{ url_for('team_management') }}">Team Management</a>
-      <a href="#">Reports</a>
-      <a href="#">Logout</a>
-    </nav>
-  </header>
-
-  <div class="container" id="employeeList"></div>
-
-  <script>
-    const employees = Array.from({ length: 20 }, (_, i) => ({
-      id: `EMP${1000 + i + 1}`,
-      name: `Employee ${i + 1}`,
-      position: ['Developer', 'Designer', 'Manager', 'QA Tester'][Math.floor(Math.random() * 4)]
-    }));
-
-    const employeeList = document.getElementById('employeeList');
-
-    employees.forEach(emp => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <h3>${emp.name}</h3>
-        <p><strong>ID:</strong> ${emp.id}</p>
-        <p><strong>Position:</strong> ${emp.position}</p>
-        <button onclick="assignTask('${emp.id}')">Assign Task</button>
-      `;
-      employeeList.appendChild(card);
-    });
-
-    function assignTask(empId) {
-      alert(`Task assigned to ${empId}`);
-    }
-  </script>
+    <h1>Task List</h1>
+    <div class="task-container" id="taskContainer"></div>
+    <button class="add-task-btn" onclick="addNewTask()">
+        <i class="fa-solid fa-plus"></i>
+    </button>
+    <script>
+        const tasks = [];
+        for (let i = 1; i <= 20; i++) {
+            tasks.push({ name: `Task ${i}`, description: `Description for Task ${i}` });
+        }
+        
+        function renderTasks() {
+            const taskContainer = document.getElementById('taskContainer');
+            taskContainer.innerHTML = '';
+            tasks.forEach((task, index) => {
+                const taskElement = document.createElement('div');
+                taskElement.classList.add('task');
+                taskElement.innerHTML = `<h3>${task.name}</h3><p>${task.description}</p>
+                    <button onclick="window.location.href='assign.html?taskId=1'">Assign Task</button>`;
+                taskContainer.appendChild(taskElement);
+            });
+        }
+        
+        function assignTask(taskIndex) {
+            alert(`Assigned: ${tasks[taskIndex].name}`);
+        }
+        
+        function addNewTask() {
+            const newTask = { name: `Task ${tasks.length + 1}`, description: `Description for Task ${tasks.length + 1}` };
+            tasks.push(newTask);
+            renderTasks();
+        }
+        
+        renderTasks();
+    </script>
 </body>
 </html>

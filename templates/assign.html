@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Task</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0e0b16, #1b1e3f, #23395d);
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            width: 320px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(to right, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        button {
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #ff8c00;
+        }
+    </style>
+</head>
+<body>
+    <h1>Assign Task</h1>
+    <div class="container">
+        <h3 id="taskName">Loading...</h3>
+        <ul id="employeeList"></ul>
+    </div>
+    
+    <script>
+        const employees = ["Alice", "Bob", "Charlie", "David", "Eve"];
+        const taskName = localStorage.getItem('selectedTask') || "No Task Selected";
+        
+        document.getElementById('taskName').innerText = `Assigning: ${taskName}`;
+        const employeeList = document.getElementById('employeeList');
+        
+        employees.forEach(emp => {
+            const li = document.createElement('li');
+            li.innerHTML = `${emp} <button onclick="assignTo('${emp}')">Assign</button>`;
+            employeeList.appendChild(li);
+        });
+        
+        function assignTo(employee) {
+            alert(`${taskName} assigned to ${employee}`);
+        }
+    </script>
+</body>
+</html>

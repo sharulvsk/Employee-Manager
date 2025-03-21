@@ -1,7 +1,25 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from functs import generate_response, csv_to_pdf
+import pandas as pd
+import plotly.express as px
+import plotly.io as pio
+import base64
+import io
+import PIL.Image
+import tempfile
+import csv
+from reportlab.lib.pagesizes import letter
+import google.generativeai as genai
+from reportlab.lib.units import inch
+from reportlab.pdfgen import canvas
+from pathlib import Path
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey' 
+genai.configure(api_key="AIzaSyDc6bNS1lVtLovKK4mEmHkalKZqkRRtO3Q")
+model = genai.GenerativeModel(model_name="gemini-2.0-flash")
+
+
 
 credentials = {
     "manager@gmail.com": {"password": "manager123", "role": "manager"},
@@ -19,6 +37,7 @@ def tasks():
 @app.route('/manage_tasks')
 def manage_tasks():
     return render_template('manage_tasks.html')
+
 
 @app.route('/support')
 def support():
@@ -91,6 +110,42 @@ def employee_home():
         return render_template('employee_home.html')
     else:
         return "Access Denied. Employees Only."
+    
+@app.route('/assign.html')  
+def assign_task():
+    return render_template('assign.html')
+
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    user_message = request.json.get("message")
+    
+    if not user_message:
+        return jsonify({"response": "Please enter a message."})
+    
+    if user_message.lower() == "hi":
+        return jsonify({"response": "Hello! How can I assist you today?"})
+    
+    elif user_message.lower() == "i have few doubts in csv":
+        try:
+            csv_filepath = r'C:\From Destop\purple-chat-bot\purple-chatbot\data.csv'
+            pdf_filepath = r'C:\Users\shankaripriya s\Downloads\output.pdf'
+            csv_to_pdf(csv_filepath, pdf_filepath)
+
+            media = Path(r'C:\Users\shankaripriya s\Downloads')
+            sample_pdf = genai.upload_file(media / 'output.pdf')
+            response4 = model.generate_content(["Summary", sample_pdf])
+            
+            return jsonify({"response": response4.text})
+        except Exception as e:
+            return jsonify({"response": f"Error: {str(e)}"})
+    
+    else:
+        try:
+            response = model.generate_content(user_message)
+            return jsonify({"response": response.text})
+        except Exception as e:
+            return jsonify({"response": f"Error generating response: {str(e)}"})
 
 @app.route('/logout')
 def logout():
